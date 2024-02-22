@@ -3,9 +3,9 @@ The percolation problem solver in a 2D domain
 
 **Description**
 
-This code simulates the percolation of a fluid through a porous medium, where the porosity is defined on a 2D grid (refer to ![Grid.cs](./cs/asd_2_wquf_apps/src/percolation/Grid.cs) class), and cell values may be either 0 ('closed' cell), 1 ('opened' pore), or 2 ('filled' by the fluid). The fluid penetrates the grid from its top side, and the system is considered percolated if one of the cells from the top side of the domain has a continuous path through the 'filled' grid's cells down to one of the cells of the bottom side of the domain.
+This code simulates the percolation of a fluid through a porous medium, where the porosity is defined on a 2D grid (refer to [Grid.cs](./cs/asd_2_wquf_apps/src/percolation/Grid.cs) class), and cell values may be either 0 ('closed' cell), 1 ('opened' pore), or 2 ('filled' by the fluid). The fluid penetrates the grid from its top side, and the system is considered percolated if one of the cells from the top side of the domain has a continuous path through the 'filled' grid's cells down to one of the cells of the bottom side of the domain.
 
-The core class ![PercolationSolver.cs](./cs/asd_2_wquf_apps/src/percolation/PercolationSolver.cs) randomly opens the remaining 'closed' cells of the grid and builds a dynamic connectivity structure between all opened cells connected to the top side of the domain. The connectivity is resolved using either ![QuickFind](./cs/asd_2_wquf_apps/src/unionfind/UnionFind.cs), ![QuickUnion](./cs/asd_2_wquf_apps/src/unionfind/UnionFindQU.cs) or ![WeightedQuickUnion](./cs/asd_2_wquf_apps/src/unionfind/UnionFindQUWeighted.cs) algorithms implemented in the 'unionfind' package.
+The core class [PercolationSolver.cs](./cs/asd_2_wquf_apps/src/percolation/PercolationSolver.cs) randomly opens the remaining 'closed' cells of the grid and builds a dynamic connectivity structure between all opened cells connected to the top side of the domain. The connectivity is resolved using either ![QuickFind](./cs/asd_2_wquf_apps/src/unionfind/UnionFind.cs), [QuickUnion](./cs/asd_2_wquf_apps/src/unionfind/UnionFindQU.cs) or [WeightedQuickUnion](./cs/asd_2_wquf_apps/src/unionfind/UnionFindQUWeighted.cs) algorithms implemented in the 'unionfind' package.
 
 Although written in C#, the key concepts of this code are inspired by Robert Sedgewick's works.
 
@@ -19,7 +19,7 @@ Closed cells are black, opened cells are gray, and cells filled by the fluid are
 
 **Usage**
 
-You can refer to ![run.bat](./cs/asd_2_wquf_apps/run.bat) batch file to launch the app from the Windows console terminal, or launch the executable manually:
+You can refer to [run.bat](./cs/asd_2_wquf_apps/run.bat) batch file to launch the app from the Windows console terminal, or launch the executable manually:
 
 1) Windows:
 `asd_2_wquf_apps.exe -res 20 -console -image`
