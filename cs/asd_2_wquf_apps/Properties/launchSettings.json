@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "asd_2_wquf_apps": {
+      "commandName": "Project",
+      "commandLineArgs": "-res 20 -console -image"
+    }
+  }
+}
