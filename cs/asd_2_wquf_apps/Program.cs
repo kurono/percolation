@@ -126,7 +126,7 @@ try
                 grid.RowsCount, grid.ColumnsCount, fileName,
                 Grid.IS(Grid.Status.CLOSED), 
                 Grid.IS(Grid.Status.OPENED_AND_FILLED),
-                imageMinRes / res);
+                (res < imageMinRes) ? imageMinRes / res : 1);
         }
     }
 }
