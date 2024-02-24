@@ -20,14 +20,14 @@ namespace asd_2_collunionfind.src.unionfind
     internal class UnionFindQUWeighted : UnionFindQU
     {
         protected int[] _size; // _size[i] in the number of elements in a subtree rooted at i
-        protected int _n;  // total number of elements
+        protected int _components;  // total number of elements
 
         public UnionFindQUWeighted(int n) : base(n)
         {
             // initially each element's index is its own root:
             // _id is the ID of the root (parent) element
 
-            _n = n;
+            _components = n;
             _size = new int[n];
             for (int i = 0; i < n; i++)
             {
@@ -52,18 +52,18 @@ namespace asd_2_collunionfind.src.unionfind
             if (_size[rootP] < _size[rootQ])
             {
                 // then parent(p) = q
-                _id[rootP] = rootQ;
+                Parent[rootP] = rootQ;
                 _size[rootQ] += _size[rootP];
             }
             // if p is greater than q
             else
             {
                 // then parent(q) = p
-                _id[rootQ] = rootP;
+                Parent[rootQ] = rootP;
                 _size[rootP] += _size[rootQ];
             }
             // decrease total number of trees/clusters/components
-            _n--;
+            _components--;
         }
     }
 }

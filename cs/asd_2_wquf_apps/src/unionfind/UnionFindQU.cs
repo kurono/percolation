@@ -29,6 +29,21 @@ namespace asd_2_collunionfind.src.unionfind
             // _id is the ID of the root (parent) element
         }
 
+        /// <summary>
+        /// Parent[i] = parent of i-th element
+        /// </summary>
+        public int[] Parent
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                _id = value;
+            }
+        }
+
         /**
          * Changes element's parent pointers until reach the root
          * @param i Element's index
@@ -38,12 +53,12 @@ namespace asd_2_collunionfind.src.unionfind
         {
             // chain-like changing the roots
             // while the i-th element index is not an index of its root
-            while (i != _id[i])
+            while (i != Parent[i])
             {
                 // to point every other node to its super-parent (the very main parent)
-                _id[i] = _id[_id[i]];
+                Parent[i] = Parent[Parent[i]];
                 // jump to the root of i-th element
-                i = _id[i];
+                i = Parent[i];
             }
             return i;
         }
@@ -58,7 +73,7 @@ namespace asd_2_collunionfind.src.unionfind
             if (rootP == rootQ) return;
 
             // make the root of p-the element a child of q-ths parent
-            _id[rootP] = rootQ;
+            Parent[rootP] = rootQ;
         }
 
         override protected bool _CallConnected(int p, int q)

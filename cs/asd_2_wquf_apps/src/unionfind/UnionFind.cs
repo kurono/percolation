@@ -57,6 +57,8 @@ namespace asd_2_collunionfind.src.unionfind
                 Print();
             }
 
+            // no need to connect the elements,
+            // if they are already connected
             if (_CallConnected(p, q))
             {
                 return;
@@ -86,7 +88,8 @@ namespace asd_2_collunionfind.src.unionfind
         }
 
         /// <summary>
-        /// The "core" of the "Union" method
+        /// The "core" of the "Union" method, 
+        /// connects two elements
         /// </summary>
         /// <param name="p"></param>
         /// <param name="q"></param>
@@ -108,7 +111,8 @@ namespace asd_2_collunionfind.src.unionfind
         }
 
         /// <summary>
-        /// The "core" of the "Connected" method
+        /// The "core" of the "Connected" method, 
+        /// checks whether two elememts are connected
         /// </summary>
         /// <param name="p"></param>
         /// <param name="q"></param>

@@ -16,6 +16,7 @@ using asd_2_wquf_apps.src.utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -69,9 +70,9 @@ namespace asd_2_wquf_apps.src.percolation
             }
 
             // mark the selected cell as opened
-            _grid[row, col] = Grid.StatusToInt(Grid.Status.OPENED);
+            _grid[row, col] = Grid.IS(Grid.Status.OPENED);
 
-            int currentCellID = _grid.To1D(row, col);
+            int currentCellID = _grid.I1(row, col);
 
             // check the special cases,
             // if a cell is located in the top or the bottom side of a grid, 
@@ -92,7 +93,7 @@ namespace asd_2_wquf_apps.src.percolation
             // and update the cell status, if yes:
             if (this.PercolateUpToCell(currentCellID))
             {
-                _grid[currentCellID] = Grid.StatusToInt(Grid.Status.OPENED_AND_FILLED);
+                _grid[currentCellID] = Grid.IS(Grid.Status.OPENED_AND_FILLED);
             }
             */
 
@@ -102,6 +103,7 @@ namespace asd_2_wquf_apps.src.percolation
             // init an array of relative 2D IDs of neighbor cells
             int[,] neighbours = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
             // enchanced for loop over neighbor cells
+            // to connect the opened ones 
             for (int inc = 0; inc < neighbours.GetLength(0); inc++)
             {
                 int neighborRow = row + neighbours[inc, 0];
@@ -109,15 +111,18 @@ namespace asd_2_wquf_apps.src.percolation
 
                 // check whether the probing neighbor cell 
                 // is within the grid row-col range
-                if (Utils.InRange<int>(neighborRow, 0, _grid.RowsCount - 1) &&
-                    Utils.InRange<int>(neighborCol, 0, _grid.ColumnsCount - 1))
+                if (_grid.ContainsCell(neighborRow, neighborCol))
                 {
                     // convert it to 1D index 
-                    int neighborCellID = _grid.To1D(neighborRow, neighborCol);
+                    int neighborCellID = _grid.I1(neighborRow, neighborCol);
                     // connect the current cell to its opened neighbor cell
                     if (_IsOpened(neighborCellID))
                     {
                         _connectivity.Union(currentCellID, neighborCellID);
+                        /*if (this.PercolateUpToCell(neighborCellID))
+                        {
+                            _grid[neighborCellID] = Grid.IS(Grid.Status.OPENED_AND_FILLED);
+                        }*/
                     }
                 }
             }
@@ -125,26 +130,25 @@ namespace asd_2_wquf_apps.src.percolation
 
         /// <summary>
         /// Open a randomly selected cell in a 2D grid
-        /// <param name="considerAlreadyOpened">If true, randomly select from the cells that are not opened yet</param>
+        /// <param name="selectFromClosed">If true, randomly select from the cells that are not opened yet</param>
         /// </summary>
-        public void OpenRandom(bool considerAlreadyOpened = false)
+        public void OpenRandom(bool selectFromClosed = false)
         {
             int randomRow = 0, randomCol = 0;
-            if (considerAlreadyOpened)
+            if (selectFromClosed)
             {
                 // extract global IDs of the closed cells
-                int[] closedCellIDs = _grid.CellsWithValue(
-                    Grid.StatusToInt(Grid.Status.CLOSED), Comparison.Operator.EQUALS);
+                int[] closedCells = _grid.CellsWithValue(
+                    Grid.IS(Grid.Status.CLOSED), Comparison.Operator.EQUALS);
 
                 // randomly select a number
-                int randomSelect = _rnd.Next(0, closedCellIDs.Length);
+                int randomSelect = _rnd.Next(0, closedCells.Length);
 
-                // marke the cell as 'opened'
-                int selectedCellID = closedCellIDs[randomSelect];
-                _grid[selectedCellID] = Grid.StatusToInt(Grid.Status.OPENED);
+                // pick a random cell from the closed ones 
+                int selectedCellID = closedCells[randomSelect];
 
                 // convert 1D index to the 2D ones
-                (randomRow, randomCol) = _grid.To2D(selectedCellID);
+                (randomRow, randomCol) = _grid.I2(selectedCellID);
             }
             else
             {
@@ -156,6 +160,8 @@ namespace asd_2_wquf_apps.src.percolation
             {
                 Logger.Write("Open a cell [", randomRow, ",", randomCol, "]\n");
             }
+
+            // try to open that randomly selected cell
             this.Open(randomRow, randomCol);
         }
 
@@ -177,7 +183,7 @@ namespace asd_2_wquf_apps.src.percolation
         /// <returns></returns>
         public bool PercolateUpToCell(int row, int col)
         {
-            return this.PercolateUpToCell(_grid.To1D(row, col));
+            return this.PercolateUpToCell(_grid.I1(row, col));
         }
 
         /// <summary>
@@ -198,24 +204,42 @@ namespace asd_2_wquf_apps.src.percolation
         /// </summary>
         public void UpdateCellsFilledStatus()
         {
-            int[] openedCellIDs = _grid.CellsWithValue(
-                Grid.StatusToInt(Grid.Status.CLOSED), Comparison.Operator.GREATER_THAN);
+            /*int[] openedCellIDs = _grid.CellsWithValue(
+                Grid.IS(Grid.Status.CLOSED), 
+                Comparison.Operator.GREATER_THAN);
             foreach (int id in openedCellIDs)
             {
-                _grid[id] = Grid.StatusToInt(
-                    this.PercolateUpToCell(id) ? Grid.Status.OPENED_AND_FILLED : Grid.Status.OPENED);
+                _grid[id] = Grid.IS(
+                    this.PercolateUpToCell(id) ? 
+                    Grid.Status.OPENED_AND_FILLED : Grid.Status.OPENED);
+            }*/
+
+            for (int i = 0; i < _grid.CellsCount; i++)
+            {
+                if (_IsOpened(i))
+                {
+                    _grid[i] = Grid.IS(Grid.Status.OPENED);
+
+                    if (PercolateUpToCell(i))
+                    {
+                        _grid[i] = Grid.IS(Grid.Status.OPENED_AND_FILLED);
+                    }
+                } else
+                {
+                    _grid[i] = Grid.IS(Grid.Status.CLOSED);
+                }
             }
         }
 
         /// <summary>
-        /// Checks if the 1D-way-indiced cell is opened
+        /// Checks if the 1D-way-indiced cell is potentially opened to fluid
         /// </summary>
         /// <param name="id1">1D index of a cell in a flatten array</param>
         /// <returns></returns>
         private bool _IsOpened(int id1)
         {
-            // a cell is opened if its status > that closed
-            return _grid[id1] > Grid.StatusToInt(Grid.Status.CLOSED);
+            // a cell is opened if its status is greater than closed
+            return _grid[id1] > Grid.IS(Grid.Status.CLOSED);
         }
 
         /// <summary>
@@ -226,7 +250,7 @@ namespace asd_2_wquf_apps.src.percolation
         /// <returns></returns>
         private bool _IsOpened(int row, int col)
         {
-            return _IsOpened(_grid[row, col]);
+            return _IsOpened(_grid.I1(row, col));
         }
     }
 }

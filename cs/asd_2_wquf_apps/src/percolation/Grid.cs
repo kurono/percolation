@@ -97,7 +97,7 @@ namespace asd_2_wquf_apps.src.percolation
             int[] columns = new int[this.ColumnsCount];
             for (int ic = 0; ic < this.ColumnsCount; ic++)
             {
-                columns[ic] = this.To1D(row, ic);
+                columns[ic] = this.I1(row, ic);
             }
             return columns;
         }
@@ -119,7 +119,7 @@ namespace asd_2_wquf_apps.src.percolation
         /// <param name="row">Cell index in a vertical direction</param>
         /// <param name="col">Cell index in a horizontal direction</param>
         /// <returns>1D index</returns>
-        public int To1D(int row, int col, bool constrain = false)
+        public int I1(int row, int col, bool constrain = false)
         {
             if (constrain)
             {
@@ -136,7 +136,7 @@ namespace asd_2_wquf_apps.src.percolation
         /// </summary>
         /// <param name="id1">1D index</param>
         /// <returns>A tuple of (row, col) indices</returns>
-        public (int row, int col) To2D(int id1, bool constrain = false)
+        public (int row, int col) I2(int id1, bool constrain = false)
         {
             int row = id1 / this.ColumnsCount; // integer division ! to find the row index
             int col = id1 - this.ColumnsCount * row; // the inverse transform of To1D
@@ -149,6 +149,18 @@ namespace asd_2_wquf_apps.src.percolation
             }
 
             return (row, col);
+        }
+
+        /// <summary>
+        /// Checks whether requested cell is available in the data array
+        /// </summary>
+        /// <param name="row">Vertical cell index</param>
+        /// <param name="col">Horizontal cell index</param>
+        /// <returns></returns>
+        public bool ContainsCell(int row, int col)
+        {
+            return Utils.InRange<int>(row, 0, this.RowsCount - 1) &&
+                   Utils.InRange<int>(col, 0, this.ColumnsCount - 1);
         }
 
         /// <summary>
@@ -217,7 +229,7 @@ namespace asd_2_wquf_apps.src.percolation
         /// </summary>
         /// <param name="status">CLOSED, OPENED or </param>
         /// <returns></returns>
-        public static int StatusToInt(Grid.Status status)
+        public static int IS(Grid.Status status)
         {
             return Convert.ToInt32(status);
         }
@@ -281,12 +293,12 @@ namespace asd_2_wquf_apps.src.percolation
             // get accessor
             get
             {
-                return _data[To1D(row, col)];
+                return _data[I1(row, col)];
             }
             // set accessor
             set
             {
-                _data[To1D(row, col)] = value;
+                _data[I1(row, col)] = value;
             }
         }
         #endregion

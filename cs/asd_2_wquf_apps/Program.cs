@@ -53,8 +53,9 @@ catch (Exception e)
 
 // define the program settings
 bool writeToConsole = false; // write grid data to console
-bool writeToImage = true; // write grid data to image
+bool writeToImage = false; // write grid data to image
 int res = 12; // cells count in each direction
+int imageMinRes = 300; // minimal resolution of the image to save to
 
 // parse command-line arguments
 if (args.Length > 0)
@@ -89,7 +90,10 @@ try
     // it's always passed by reference for reference data types,
     // so the 'sol' will change the actual cellStatusData
     PercolationSolver sol = new PercolationSolver(grid, true);
-    for (int iter = 0; iter < grid.CellsCount; iter++)
+    int maxIter = grid.CellsCount;
+    //int[,] ids = { {1, 1}, {0, 2}, {1, 2}, {2, 3}, {2, 2} };
+    //maxIter = ids.GetLength(0);
+    for (int iter = 0; iter < maxIter; iter++)
     {
         if (writeToConsole && (iter == 0))
         {
@@ -99,11 +103,12 @@ try
         }
         // open a cell
         sol.OpenRandom(true);
+        //sol.Open(ids[iter, 0], ids[iter, 1]);
         // check all opened cell if they are accessible to fluid flow from the top side
         sol.UpdateCellsFilledStatus();
         // cells, which status > than 'closed' are either opened or opened-and-filled
         int filledCellsCount = grid.CountOfCellsWithValue(
-            Grid.StatusToInt(Grid.Status.CLOSED), Comparison.Operator.GREATER_THAN);
+            Grid.IS(Grid.Status.CLOSED), Comparison.Operator.GREATER_THAN);
         Logger.Write("Iteration:", iter,
                      ", Opened cells = ", filledCellsCount,
                      ", Porosity = ", 100 * filledCellsCount / grid.CellsCount, "%, ",
@@ -117,8 +122,11 @@ try
         if (writeToImage)
         {
             string fileName = $"{savesDirName}//{iter.ToString("D6")}.ppm";
-            PPMExporter.WriteFile(grid.RawData, grid.RowsCount, grid.ColumnsCount, fileName,
-                Grid.StatusToInt(Grid.Status.CLOSED), Grid.StatusToInt(Grid.Status.OPENED_AND_FILLED));
+            PPMExporter.WriteFile(grid.RawData, 
+                grid.RowsCount, grid.ColumnsCount, fileName,
+                Grid.IS(Grid.Status.CLOSED), 
+                Grid.IS(Grid.Status.OPENED_AND_FILLED),
+                imageMinRes / res);
         }
     }
 }
