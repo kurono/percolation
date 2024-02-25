@@ -170,7 +170,7 @@ namespace asd_2_wquf_apps.src.percolation
         /// </summary>
         /// <param name="id1">1D index of a cell in a 2D grid</param>
         /// <returns></returns>
-        public bool PercolateUpToCell(int id1)
+        public bool PercolatesUpToCell(int id1)
         {
             return _connectivity.Connected(_vTopID, id1);
         }
@@ -183,7 +183,7 @@ namespace asd_2_wquf_apps.src.percolation
         /// <returns></returns>
         public bool PercolateUpToCell(int row, int col)
         {
-            return this.PercolateUpToCell(_grid.I1(row, col));
+            return this.PercolatesUpToCell(_grid.I1(row, col));
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace asd_2_wquf_apps.src.percolation
             foreach (int id in openedCellIDs)
             {
                 _grid[id] = Grid.IS(
-                    this.PercolateUpToCell(id) ? 
+                    this.PercolatesUpToCell(id) ? 
                     Grid.Status.OPENED_AND_FILLED : Grid.Status.OPENED);
             }*/
 
@@ -220,7 +220,7 @@ namespace asd_2_wquf_apps.src.percolation
                 {
                     _grid[i] = Grid.IS(Grid.Status.OPENED);
 
-                    if (PercolateUpToCell(i))
+                    if (PercolatesUpToCell(i))
                     {
                         _grid[i] = Grid.IS(Grid.Status.OPENED_AND_FILLED);
                     }
