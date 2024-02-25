@@ -15,11 +15,9 @@ If the program is run with the '-image' command line argument, it saves cell val
 Closed cells are black, opened cells are gray, and cells filled by the fluid are white.
 When collected together, the frames look like this:
 
-`-res 20` making a 20 x 20 grid:
-![Demo](./4readme/percolation_20.gif)
-
-`res -220` maing a 220 x 220 grid:
-![Demo](./4readme/percolation_220.gif)
+| `-res 20` | `res -220` |
+| :-------------: | :-------------:|
+| ![Demo](./4readme/percolation_20.gif) | ![Demo](./4readme/percolation_220.gif) |
 
 **Usage**
 
