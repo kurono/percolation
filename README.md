@@ -28,25 +28,20 @@ When collected together, the frames look like this:
 
 You can refer to the [run.bat](./cs/asd_2_wquf_apps/run.bat) batch file to launch the C# app from the Windows console terminal, or you can refer to the [runj.bat](./java/asd_2_wquf_apps/runj.bat) batch file to launch the Java JAR file, or you can launch the executable manually:
 
-1) Windows:
-| C# | Java |
-| :-------------: | :-------------:|
-| `asd_2_wquf_apps.exe -res 20 -console -image -ll` | `java -jar .\asd_2_wquf_apps.jar -res 20 -console -image -ll` |
-
-
-2) Linux/Mac:
-| C# | Java |
-| :-------------: | :-------------:|
-| `dotnet .\asd_2_wquf_apps.dll -res 20 -console -image -ll` | `java -jar .\asd_2_wquf_apps.jar -res 20 -console -image -ll` |
-
+| Language | Platform | Launch command 
+| -------- | ------- | ------- |
+| C# | Windows | `asd_2_wquf_apps.exe -res 20 -console -image -ll` |
+| C# | Linux/Mac | `dotnet .\asd_2_wquf_apps.dll -res 20 -console -image -ll` |
+| Java | Windows/Linux/Mac | `java -jar .\asd_2_wquf_apps.jar -res 20 -console -image -ll` |
+ 
 The command line arguments have the following meanings:
-    `-res N` represents the grid resolution (its rows and columns count);
-    
-    `-console` specifies to write the grid data into the console in an ASCII-art manner;
-    
-    `-image` indicates to save the grid data into PPM files in the 'saves' directory;
-	
-    `-ll` try to launch this application on multiple processor threads.
+
+| Argument | Description |
+| -------- | ------- |
+| `-res N` | represents the grid resolution (its rows and columns count) as N by N |
+| `-console` | specifies to write the grid data into the console in an ASCII-art manner |
+| `-image` | indicates whether to save the grid data into PPM files in the 'saves' directory |
+| `-ll` | try to launch this application on multiple processor threads |
 
 So, if you want to print only the cell data to the console, type:
 `asd_2_wquf_apps.exe -res 20 -console -ll`.
