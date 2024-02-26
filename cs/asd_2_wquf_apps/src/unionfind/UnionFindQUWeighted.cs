@@ -20,7 +20,7 @@ namespace asd_2_collunionfind.src.unionfind
     internal class UnionFindQUWeighted : UnionFindQU
     {
         protected int[] _size; // _size[i] in the number of elements in a subtree rooted at i
-        protected int _components;  // total number of elements
+        protected int _components;  // total number of clusters
 
         public UnionFindQUWeighted(int n) : base(n)
         {

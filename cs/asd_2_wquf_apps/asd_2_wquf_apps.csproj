@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Content Include="run.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

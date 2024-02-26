@@ -1,6 +1,6 @@
 ﻿/*
  * File: Program.cs
- * Description: Main entry point of the program
+ * Description: Main entry point of the  Percolation simulation program
  * Authors:
  *   - Ilya Tsivilskiy
  * Copyright: (c) 2023 Ilya Tsivilskiy
@@ -14,6 +14,8 @@ using asd_2_wquf_apps.src.io;
 using asd_2_wquf_apps.src.percolation;
 
 Logger.WriteLine("Start!\n");
+Stopwatch timer = new Stopwatch();
+
 Logger.WriteLine("Solves the percolation problem",
                  "on a 2D square grid. The fluid",
                  "flows from the top to the bottom side.",
@@ -29,7 +31,8 @@ Logger.WriteLine("Solves the percolation problem",
                  "Command-line arguments:",
                  "\tGrid resoluition: -res N",
                  "\tWrite cell data to console: -console",
-                 "\tWrite cell data to PPM file: -image\n");
+                 "\tWrite cell data to PPM file: -image",
+                 "\tRun in multiple threads: -ll\n");
 
 // allow the unicode characters support
 Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -142,11 +145,10 @@ catch (Exception e)
 
 Logger.WriteLine("Ok!");
 
+Logger.Write("Elapsed time =", timer.GetElapsedTime(), "[s]\n");
+
 // Prevent the console window from closing
-if (!writeToConsole)
-{
-    Logger.WriteLine("Press any key to exit...");
-    Console.ReadKey();
-}
+Logger.WriteLine("Press any key to exit...");
+Console.ReadKey();
 
 

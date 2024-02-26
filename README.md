@@ -7,6 +7,11 @@ This code simulates the percolation of a fluid through a porous medium, where th
 
 The core class [PercolationSolver.cs](./cs/asd_2_wquf_apps/src/percolation/PercolationSolver.cs) randomly opens the remaining 'closed' cells of the grid and builds a dynamic connectivity structure between all opened cells connected to the top side of the domain. The connectivity is resolved using either [QuickFind](./cs/asd_2_wquf_apps/src/unionfind/UnionFind.cs), [QuickUnion](./cs/asd_2_wquf_apps/src/unionfind/UnionFindQU.cs) or [WeightedQuickUnion](./cs/asd_2_wquf_apps/src/unionfind/UnionFindQUWeighted.cs) algorithms implemented in the 'unionfind' package.
 
+The source code is provided in both [C#](./cs/) and [Java](./java/) languages.
+The compiled executables can be launched via Windows batch scripts: [run.bat for the C#-version](./cs/asd_2_wquf_apps/run.bat) or [runj.bat for the Java version](./java/asd_2_wquf_apps/runj.bat).
+
+The code is partially parallelized using `Parallel.For` and `.AsParallel()` in C#, and via parallel streams in Java.
+
 Although written in C#, the key concepts of this code are inspired by Robert Sedgewick's works.
 
 **Demo**
@@ -21,24 +26,32 @@ When collected together, the frames look like this:
 
 **Usage**
 
-You can refer to [run.bat](./cs/asd_2_wquf_apps/run.bat) batch file to launch the app from the Windows console terminal, or launch the executable manually:
+You can refer to the [run.bat](./cs/asd_2_wquf_apps/run.bat) batch file to launch the C# app from the Windows console terminal, or you can refer to the [runj.bat](./java/asd_2_wquf_apps/runj.bat) batch file to launch the Java JAR file, or you can launch the executable manually:
 
 1) Windows:
-`asd_2_wquf_apps.exe -res 20 -console -image -ll`
+| C# | Java |
+| :-------------: | :-------------:|
+| `asd_2_wquf_apps.exe -res 20 -console -image -ll` | `java -jar .\asd_2_wquf_apps.jar -res 20 -console -image -ll` |
+
 
 2) Linux/Mac:
-`dotnet asd_2_wquf_apps.dll -res 20 -console -image -ll`
+| C# | Java |
+| :-------------: | :-------------:|
+| `dotnet .\asd_2_wquf_apps.dll -res 20 -console -image -ll` | `java -jar .\asd_2_wquf_apps.jar -res 20 -console -image -ll` |
 
 The command line arguments have the following meanings:
     `-res N` represents the grid resolution (its rows and columns count);
+    
     `-console` specifies to write the grid data into the console in an ASCII-art manner;
+    
     `-image` indicates to save the grid data into PPM files in the 'saves' directory;
-	`-ll` try to launch this application on multiple processor threads.
+	
+    `-ll` try to launch this application on multiple processor threads.
 
 So, if you want to print only the cell data to the console, type:
-`asd_2_wquf_apps.exe -res 20 -console`.
+`asd_2_wquf_apps.exe -res 20 -console -ll`.
  If you want to save only the cell data as PPM images, type:
-`asd_2_wquf_apps.exe -res 20 -image`.
+`asd_2_wquf_apps.exe -res 20 -image -ll`.
 
 **License**
 

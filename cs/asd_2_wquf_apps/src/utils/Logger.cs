@@ -1,5 +1,5 @@
 ﻿/*
- * File: Stopwatch.cs
+ * File: Logger.cs
  * Description: Just a wrapper around the standard Stopwatch class, 
  * implemented for the sake of portablity.
  * Authors:
