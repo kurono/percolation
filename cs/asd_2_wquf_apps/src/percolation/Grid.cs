@@ -169,26 +169,30 @@ namespace asd_2_wquf_apps.src.percolation
         /// <param name="value">The data value to find to</param>
         /// <param name="operation">The comparison operator: cell[i] 'op' value</param>
         /// <returns></returns>
-        public int CountOfCellsWithValue(int value, 
+        public int CountOfCellsWithValue(int value,
             Comparison.Operator operation = Comparison.Operator.EQUALS)
         {
             // uses the Language-Integrated Query (LINQ)
             // to aquire the data (from different sources) in a unified way
-            switch (operation)
+            return _data.AsParallel().Count(item =>
             {
-                case Comparison.Operator.EQUALS:
-                    return _data.Count(item => item == value);
-                case Comparison.Operator.GREATER_THAN:
-                    return _data.Count(item => item > value);
-                case Comparison.Operator.LESS_THAN:
-                    return _data.Count(item => item < value);
-                case Comparison.Operator.GREATER_THAN_OR_EQUAL:
-                    return _data.Count(item => item >= value);
-                case Comparison.Operator.LESS_THAN_OR_EQUAL:
-                    return _data.Count(item => item <= value);
-                default:
-                    return 0;
-            }
+                switch (operation)
+                {
+                    case Comparison.Operator.EQUALS:
+                        return item == value;
+                    case Comparison.Operator.GREATER_THAN:
+                        return item > value;
+                    case Comparison.Operator.LESS_THAN:
+                        return item < value;
+                    case Comparison.Operator.GREATER_THAN_OR_EQUAL:
+                        return item >= value;
+                    case Comparison.Operator.LESS_THAN_OR_EQUAL:
+                        return item <= value;
+                    default:
+                        return false;
+                }
+            });
+
         }
 
         /// <summary>
@@ -197,11 +201,12 @@ namespace asd_2_wquf_apps.src.percolation
         /// <param name="value">The data value to find to</param>
         /// <param name="operation">The comparison operator: cell[i] 'op' value</param>
         /// <returns></returns>
-        public int[] CellsWithValue(int value, 
+        public int[] CellsWithValue(int value,
             Comparison.Operator operation = Comparison.Operator.EQUALS)
         {
             // Use LINQ to return all cell IDs with the specific value
-            return _data.Select((val, id) => new { Value = val, Index = id })
+            return _data.AsParallel()
+                .Select((val, id) => new { Value = val, Index = id })
                   .Where(item =>
                   {
                       switch (operation)
@@ -239,7 +244,7 @@ namespace asd_2_wquf_apps.src.percolation
             // define the palette
             //char[] pal = {'\u25A0', '\u25A1'}; // blank and filled square
             //char[] pal = {'\u2591', '\u2592', '\u2588'}; // vertical rectangle of full and medium shades 
-            char[] pal = {'\u2591', '\u2592', '\u2588'}; // vertical rectangle of full and medium shades 
+            char[] pal = { '\u2591', '\u2592', '\u2588' }; // vertical rectangle of full and medium shades 
 
             StringBuilder sb = new StringBuilder();
             for (int ir = 0; ir < this.RowsCount; ir++)

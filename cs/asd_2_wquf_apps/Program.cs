@@ -56,6 +56,7 @@ bool writeToConsole = false; // write grid data to console
 bool writeToImage = false; // write grid data to image
 int res = 12; // cells count in each direction
 int imageMinRes = 300; // minimal resolution of the image to save to
+bool ll = false; // run on multiple processors
 
 // parse command-line arguments
 if (args.Length > 0)
@@ -78,6 +79,10 @@ if (args.Length > 0)
         {
             writeToImage = true;
         }
+        else if (args[i] == "-ll")
+        {
+            ll = true;            
+        }
     }
 }
 
@@ -89,7 +94,7 @@ try
     // when passing an object as an argument to a method or constructor,
     // it's always passed by reference for reference data types,
     // so the 'sol' will change the actual cellStatusData
-    PercolationSolver sol = new PercolationSolver(grid, true);
+    PercolationSolver sol = new PercolationSolver(grid, ll, true);
     int maxIter = grid.CellsCount;
     //int[,] ids = { {1, 1}, {0, 2}, {1, 2}, {2, 3}, {2, 2} };
     //maxIter = ids.GetLength(0);

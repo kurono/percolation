@@ -2,7 +2,7 @@
   "profiles": {
     "asd_2_wquf_apps": {
       "commandName": "Project",
-      "commandLineArgs": "-res 10 -noconsole -image"
+      "commandLineArgs": "-res 100 -noconsole -noimage -ll"
     }
   }
 }

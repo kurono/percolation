@@ -1,7 +1,7 @@
 ﻿@echo off
 
 rem Set the command-line arguments
-set args=-res 20 -console -image
+set args=-res 20 -console -image -ll
 
 rem Call the C# executable with the arguments
 rem dotnet asd_2_wquf_apps.dll %args%

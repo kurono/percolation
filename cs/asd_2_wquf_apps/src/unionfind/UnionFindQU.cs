@@ -30,7 +30,8 @@ namespace asd_2_collunionfind.src.unionfind
         }
 
         /// <summary>
-        /// Parent[i] = parent of i-th element
+        /// Parent[i] = parent of i-th element, 
+        /// a wrap-up over the _id array
         /// </summary>
         public int[] Parent
         {
@@ -72,7 +73,7 @@ namespace asd_2_collunionfind.src.unionfind
             int rootQ = Root(q);
             if (rootP == rootQ) return;
 
-            // make the root of p-the element a child of q-ths parent
+            // make the root of p-th element to be a child of the q-ths parent
             Parent[rootP] = rootQ;
         }
 

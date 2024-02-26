@@ -29,9 +29,10 @@ namespace asd_2_wquf_apps.src.percolation
         private int _vTopID; // 1D index of a virtual cell connecting all top cells  
         private int _vBottomID; // 1D index of a virtual cell connecting all bottom cells
         private Random _rnd; // pseudo-random numbers generator
-        private bool _debug;
+        private bool _ll; // a flag that it runs in parallel mode
+        private bool _debug; // log the debug information into console
 
-        public PercolationSolver(Grid grid, bool debug = false)
+        public PercolationSolver(Grid grid, bool ll = false, bool debug = false)
         {
             // The grid will hold an 1D array of cell values,
             // all of them are closed ( = 0) at the first stage
@@ -53,6 +54,7 @@ namespace asd_2_wquf_apps.src.percolation
             // to ensure variety in the generate
             _rnd = new Random();
 
+            _ll = ll;
             _debug = debug;
         }
 
@@ -137,7 +139,7 @@ namespace asd_2_wquf_apps.src.percolation
             int randomRow = 0, randomCol = 0;
             if (selectFromClosed)
             {
-                // extract global IDs of the closed cells
+                // extract global IDs of all the closed cells
                 int[] closedCells = _grid.CellsWithValue(
                     Grid.IS(Grid.Status.CLOSED), Comparison.Operator.EQUALS);
 
@@ -214,19 +216,27 @@ namespace asd_2_wquf_apps.src.percolation
                     Grid.Status.OPENED_AND_FILLED : Grid.Status.OPENED);
             }*/
 
-            for (int i = 0; i < _grid.CellsCount; i++)
+            Func<int, int> cellStatus = (i) =>
             {
-                if (_IsOpened(i))
-                {
-                    _grid[i] = Grid.IS(Grid.Status.OPENED);
+                return _IsOpened(i) 
+                        ? (PercolatesUpToCell(i) 
+                                ? Grid.IS(Grid.Status.OPENED_AND_FILLED)
+                                : Grid.IS(Grid.Status.OPENED)) 
+                        : Grid.IS(Grid.Status.CLOSED);
+            };
 
-                    if (PercolatesUpToCell(i))
-                    {
-                        _grid[i] = Grid.IS(Grid.Status.OPENED_AND_FILLED);
-                    }
-                } else
+            if (_ll)
+            {
+                Parallel.For(0, _grid.CellsCount, i =>
                 {
-                    _grid[i] = Grid.IS(Grid.Status.CLOSED);
+                    _grid[i] = cellStatus(i);
+                });
+            }
+            else
+            {
+                for (int i = 0; i < _grid.CellsCount; i++)
+                {
+                    _grid[i] = cellStatus(i);
                 }
             }
         }

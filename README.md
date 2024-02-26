@@ -24,15 +24,16 @@ When collected together, the frames look like this:
 You can refer to [run.bat](./cs/asd_2_wquf_apps/run.bat) batch file to launch the app from the Windows console terminal, or launch the executable manually:
 
 1) Windows:
-`asd_2_wquf_apps.exe -res 20 -console -image`
+`asd_2_wquf_apps.exe -res 20 -console -image -ll`
 
 2) Linux/Mac:
-`dotnet asd_2_wquf_apps.dll -res 20 -console -image`
+`dotnet asd_2_wquf_apps.dll -res 20 -console -image -ll`
 
 The command line arguments have the following meanings:
     `-res N` represents the grid resolution (its rows and columns count);
     `-console` specifies to write the grid data into the console in an ASCII-art manner;
-    `-image` indicates to save the grid data into PPM files in the 'saves' directory.
+    `-image` indicates to save the grid data into PPM files in the 'saves' directory;
+	`-ll` try to launch this application on multiple processor threads.
 
 So, if you want to print only the cell data to the console, type:
 `asd_2_wquf_apps.exe -res 20 -console`.
