@@ -27,6 +27,7 @@ When collected together, the frames look like this:
 The command-line argument '-console' enables pseudo-graphical rendering of grid data in console text mode. Vertical flickering occurs due to the automatic scrolling of the console text when new lines are printed. However, each previous frame can be observed by sliding the console scrollbar:
 
 `-res 20 -console`
+
 ![Demo20Con](./4readme/percolation_20_console.gif)
 
 **Usage**
