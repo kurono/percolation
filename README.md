@@ -20,9 +20,14 @@ If the program is run with the '-image' command line argument, it saves cell val
 Closed cells are black, opened cells are gray, and cells filled by the fluid are white.
 When collected together, the frames look like this:
 
-| 20 x 20: `-res 20` | 220 x 220: `-res 220` |
+| `-res 20 -image` | `-res 220 -image` |
 | :-------------: | :-------------:|
-| ![Demo](./4readme/percolation_20.gif) | ![Demo](./4readme/percolation_220.gif) |
+| ![Demo20](./4readme/percolation_20.gif) | ![Demo220](./4readme/percolation_220.gif) |
+
+The command-line argument '-console' enables pseudo-graphical rendering of grid data in console text mode. Vertical flickering occurs due to the automatic scrolling of the console text when new lines are printed. However, each previous frame can be observed by sliding the console scrollbar:
+
+`-res 20 -console`
+![Demo20Con](./4readme/percolation_20_console.gif)
 
 **Usage**
 
